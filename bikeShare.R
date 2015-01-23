@@ -38,7 +38,20 @@ train_factor$month <- factor(train_factor$month, levels =
 test_factor$month <- factor(months(as.Date(test_factor$datetime)))
 str(train_factor)
 
+#day of year column
+train_factor$julian <- julian(as.Date(train_factor$datetime)) - 14974
+train_factor$julian <- factor(train_factor$julian)
+
+#checking for NA
+which(is.na(train_factor))
+length(which(is.na(train_factor)))
+
 #histograms
+julian<- ggplot(data = train_factor, aes(x = julian, y = count)) + 
+  stat_summary(fun.y = mean, geom = "bar", fill = "white", colour = "black")
+julian
+aggregate(count~julian, train_factor, mean)
+
 day <- ggplot(data = train_factor, aes(x = day, y = count)) + 
   stat_summary(fun.y = mean, geom = "bar", fill = "white", colour = "black")
 day
@@ -91,4 +104,9 @@ weather
 aggregate(count~weather, train_factor, mean)
 summary(train_factor$weather)
 
+#correlation matrix
+set.seed(100)
+tf_subset <- train_factor[, c(3:15)]
+matrix <- ggpairs(tf_subset[sample.int(nrow(tf_subset), 1000), ])
+matrix
 
