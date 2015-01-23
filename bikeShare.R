@@ -104,6 +104,10 @@ weather
 aggregate(count~weather, train_factor, mean)
 summary(train_factor$weather)
 
+#visualizing casual and registered (casual + registered = count)
+aggregate(cbind(casual, casual/count, registered, registered/count) ~ day, train_factor, mean)
+aggregate(cbind(casual, casual/count, registered, registered/count) ~ month, train_factor, mean)
+
 #correlation matrix
 set.seed(100)
 tf_subset <- train_factor[, c(3:15)]
