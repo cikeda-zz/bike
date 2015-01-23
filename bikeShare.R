@@ -59,6 +59,11 @@ time <- ggplot(data = train_factor, aes(x = time, y = count)) +
 time
 aggregate(count~time, train_factor, mean)
 
+temp <- ggplot(data = train_factor, aes(x = temp, y = count)) + 
+  stat_summary(fun.y = mean, geom = "point", fill = "white", colour = "black")
+temp
+aggregate(count~temp, train_factor, mean)
+
 atemp <- ggplot(data = train_factor, aes(x = atemp, y = count)) + 
   stat_summary(fun.y = mean, geom = "point", fill = "white", colour = "black")
 atemp
@@ -85,3 +90,5 @@ weather <- ggplot(data = train_factor, aes(x = weather, y = count)) +
 weather
 aggregate(count~weather, train_factor, mean)
 summary(train_factor$weather)
+
+
