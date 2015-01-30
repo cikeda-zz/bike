@@ -41,6 +41,8 @@ str(train_factor)
 #day of year column
 train_factor$julian <- julian(as.Date(train_factor$datetime)) - 14974
 train_factor$julian <- factor(train_factor$julian)
+test_factor$julian <- julian(as.Date(test_factor$datetime)) - 14974
+test_factor$julian <- factor(test_factor$julian)
 
 #checking for NA
 which(is.na(train_factor))
