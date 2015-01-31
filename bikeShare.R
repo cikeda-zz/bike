@@ -109,12 +109,20 @@ summary(train_factor$weather)
 #visualizing casual and registered (casual + registered = count)
 aggregate(cbind(casual, casual/count, registered, registered/count) ~ day, train_factor, mean)
 aggregate(cbind(casual, casual/count, registered, registered/count) ~ month, train_factor, mean)
+
+long_day <- melt(train_factor, id.vars = "day", measure = c("casual", "registered"))
+long_day
+long_dayg <- ggplot(data = long_day, aes(x = day, y = value, fill = variable)) +
+  stat_summary(fun.y = mean, geom = "bar", position = "dodge")
+long_dayg
+
 day_casual <- ggplot(data = train_factor, aes(x = day, y = casual)) +
-  stat_summary(fun.y = mean, geom = "bar", fill = "white", colour = "black", position = "dodge") 
+  stat_summary(fun.y = mean, geom = "bar", fill = "white", colour = "black")
 day_casual
 day_registered <- ggplot(data = train_factor, aes(x = day, y = registered)) +
-  stat_summary(fun.y = mean, geom = "bar", fill = "white", colour = "black", position = "dodge") 
+  stat_summary(fun.y = mean, geom = "bar", fill = "white", colour = "black")
 day_registered
+
 grid.arrange(day_casual, day_registered, ncol=1)
 
 #correlation matrix
@@ -130,6 +138,7 @@ SSE <- sum(casual_day$residuals^2)
 SSE
 RMSE <- sqrt(SSE/nrow(train_factor))
 RMSE
+
 registered_day <- lm(registered ~ day, data = train_factor)
 summary(registered_day)
 SSE <- sum(registered_day$residuals^2)
@@ -143,12 +152,14 @@ SSE <- sum(casual_workday$residuals^2)
 SSE
 RMSE <- sqrt(SSE/nrow(train_factor))
 RMSE
+
 registered_workingday <- lm(registered ~ workingday, data = train_factor)
 summary(registered_workingday)
 SSE <- sum(registered_workingday$residuals^2)
 SSE
 RMSE <- sqrt(SSE/nrow(train_factor))
 RMSE
+
 #relevel day so sunday is 0
 train_factor2 <- within(train_factor, day <- relevel(day, ref = 7))
 casual_day2 <- lm(casual ~ day , data = train_factor2)
